@@ -1,0 +1,15 @@
+{
+  "name": "@vois-so/speech-endpoint",
+  "version": "0.1.0",
+  "description": "Vois Studio voices for apps that use the OpenAI speech API. A local server on your computer.",
+  "type": "module",
+  "bin": { "speech-endpoint": "speech-endpoint.mjs" },
+  "files": ["speech-endpoint.mjs", "README.md", "LICENSE"],
+  "engines": { "node": ">=18" },
+  "scripts": { "start": "node speech-endpoint.mjs start", "test": "node --test --test-timeout=20000 test/speech-endpoint.test.mjs" },
+  "repository": { "type": "git", "url": "git+https://github.com/vois-so/speech-endpoint.git" },
+  "homepage": "https://github.com/vois-so/speech-endpoint",
+  "license": "MIT",
+  "keywords": ["openai", "text-to-speech", "tts", "open-notebook", "voicemode", "local", "vois-studio"],
+  "private": true
+}
