@@ -6,7 +6,7 @@
   "bin": { "speech-endpoint": "speech-endpoint.mjs" },
   "files": ["speech-endpoint.mjs", "README.md", "LICENSE"],
   "engines": { "node": ">=18" },
-  "scripts": { "start": "node speech-endpoint.mjs start", "test": "node --test --test-timeout=20000 test/speech-endpoint.test.mjs" },
+  "scripts": { "start": "node speech-endpoint.mjs start", "test": "node --test test/speech-endpoint.test.mjs" },
   "repository": { "type": "git", "url": "git+https://github.com/vois-so/speech-endpoint.git" },
   "homepage": "https://github.com/vois-so/speech-endpoint",
   "license": "MIT",
