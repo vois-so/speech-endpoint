@@ -1,6 +1,6 @@
 {
   "name": "@vois-so/speech-endpoint",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Vois Studio voices for apps that use the OpenAI speech API. A local server on your computer.",
   "type": "module",
   "bin": { "speech-endpoint": "speech-endpoint.mjs" },
