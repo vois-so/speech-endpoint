@@ -316,7 +316,7 @@ const REASON_MAP = {
   incompatible_voice: [400, "voice_not_compatible", "This voice does not operate with this engine."],
   language_uncertain: [400, "language_uncertain", "Vois Studio could not find the language. Send a language, for example \"language\": \"English\"."],
   near_silent: [400, "near_silent", "The audio was almost silent. Send a longer text, or select a different voice."],
-  package_not_installed: [400, "engine_not_installed", "This computer does not have this engine. Open Vois Studio and download the engine, or run: vois-cli model download --model <engine>"],
+  package_not_installed: [400, "engine_not_installed", "This computer does not have the engine or its language package. Download it in Vois Studio, or run: vois-cli model download --model <engine> (for a Fast language, add --language <code>)."],
   package_unavailable: [503, "engine_not_available", "This engine is not available to download yet."],
   voice_not_found: [404, "voice_not_found", "Vois Studio does not have this voice. GET /v1/audio/voices lists the voices."],
 };
@@ -342,7 +342,9 @@ export async function synthesize(job, { env = process.env } = {}) {
   if (res.code !== 0) {
     const { message: detail, reason } = cliError(res.stderr);
     const [status, code, message] = REASON_MAP[reason] || EXIT_MAP[res.code] || [500, "vois_cli_error", "vois-cli stopped with an error."];
-    const text = detail && status !== 402 && !REASON_MAP[reason] ? `${message} ${detail}` : message;
+    // package_not_installed keeps the vois-cli detail: it names the missing engine or Fast language.
+    const keepDetail = !REASON_MAP[reason] || reason === "package_not_installed";
+    const text = detail && status !== 402 && keepDetail ? `${message} ${detail}` : message;
     throw new HttpError(status, code, text, status === 503 ? 5 : undefined);
   }
   const wav = res.stdout;

@@ -218,6 +218,11 @@ test("vois-cli exit codes become HTTP errors", async () => {
       await s2.close();
     }
     assert.equal(got.status, status, `exit ${exit} ${reason || ""}: ${got.text.slice(0, 200)}`);
-    assert.equal(JSON.parse(got.text).error.code, code);
+    const error = JSON.parse(got.text).error;
+    assert.equal(error.code, code);
+    if (reason === "package_not_installed") {
+      assert.match(error.message, /--language <code>/);
+      assert.match(error.message, /fake failure$/, "the vois-cli detail stays in the message");
+    }
   }
 });
