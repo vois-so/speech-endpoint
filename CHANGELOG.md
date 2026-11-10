@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+- The live tests with Vois Studio 2.6.3 pass for all six engines.
+- When this computer does not have the engine (`data.reason: "package_not_installed"` in Vois Studio 2.6.3 and after), the server gives `400 engine_not_installed`. Before, it gave `500 vois_cli_error`.
+- `data.reason: "voice_not_found"` (Vois Studio 2.6.3 and after) gives `404 voice_not_found`, as exit code 4 did before.
+
 ## 0.1.0
 
 - `POST /v1/audio/speech` in the OpenAI format, with the formats mp3, opus, aac, flac, wav and pcm.

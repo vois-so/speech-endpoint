@@ -18,7 +18,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-export const VERSION = "0.1.0";
+export const VERSION = "0.1.1";
 export const DEFAULT_PORT = 8790;
 const MAX_BODY = 64 * 1024;
 const MAX_INPUT = 4096;
@@ -316,7 +316,9 @@ const REASON_MAP = {
   incompatible_voice: [400, "voice_not_compatible", "This voice does not operate with this engine."],
   language_uncertain: [400, "language_uncertain", "Vois Studio could not find the language. Send a language, for example \"language\": \"English\"."],
   near_silent: [400, "near_silent", "The audio was almost silent. Send a longer text, or select a different voice."],
+  package_not_installed: [400, "engine_not_installed", "This computer does not have this engine. Open Vois Studio and download the engine, or run: vois-cli model download --model <engine>"],
   package_unavailable: [503, "engine_not_available", "This engine is not available to download yet."],
+  voice_not_found: [404, "voice_not_found", "Vois Studio does not have this voice. GET /v1/audio/voices lists the voices."],
 };
 
 class HttpError extends Error {

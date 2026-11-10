@@ -38,7 +38,8 @@ process.stdin.on("end", () => {
   fs.writeFileSync(${JSON.stringify(argsFile)}, JSON.stringify({ args: process.argv.slice(2), input }));
   const code = Number(process.env.FAKE_EXIT || 0);
   if (code) {
-    process.stderr.write(JSON.stringify({ error: { message: "fake failure" } }) + "\\n");
+    const data = process.env.FAKE_REASON ? { reason: process.env.FAKE_REASON } : undefined;
+    process.stderr.write(JSON.stringify({ error: { message: "fake failure", data } }) + "\\n");
     process.exit(code);
   }
   if (process.argv.includes("voice")) {
@@ -198,10 +199,13 @@ test("vois-cli exit codes become HTTP errors", async () => {
     [2, 503, "app_not_running"],
     [4, 404, "voice_not_found"],
     [64, 400, "invalid_request"],
+    [4, 404, "voice_not_found", "voice_not_found"],
+    [1, 400, "engine_not_installed", "package_not_installed"],
+    [1, 400, "voice_not_compatible", "incompatible_voice"],
   ];
-  for (const [exit, status, code] of cases) {
+  for (const [exit, status, code, reason] of cases) {
     const p2 = port + 1;
-    const s2 = await start({ port: p2, token: TOKEN, config: { ...DEFAULT_CONFIG, port: p2 }, env: { ...env, FAKE_EXIT: String(exit) }, log: () => {} });
+    const s2 = await start({ port: p2, token: TOKEN, config: { ...DEFAULT_CONFIG, port: p2 }, env: { ...env, FAKE_EXIT: String(exit), FAKE_REASON: reason || "" }, log: () => {} });
     let got;
     try {
       const r = await fetch(`http://127.0.0.1:${p2}/v1/audio/speech`, {
@@ -213,7 +217,7 @@ test("vois-cli exit codes become HTTP errors", async () => {
     } finally {
       await s2.close();
     }
-    assert.equal(got.status, status, `exit ${exit}: ${got.text.slice(0, 200)}`);
+    assert.equal(got.status, status, `exit ${exit} ${reason || ""}: ${got.text.slice(0, 200)}`);
     assert.equal(JSON.parse(got.text).error.code, code);
   }
 });

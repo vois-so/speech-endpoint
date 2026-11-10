@@ -101,6 +101,7 @@ The server gives OpenAI-style errors: `{"error": {"message", "type", "code"}}`.
 | 401 | `invalid_api_key` | The token is not correct. |
 | 402 | `plan_required` | For audio files, a paid plan or export credits are necessary. |
 | 400 | `voice_not_compatible` | The voice does not operate with the engine. |
+| 400 | `engine_not_installed` | This computer does not have the engine. Download it in Vois Studio. |
 | 400 | `language_uncertain` | Send a `language`. |
 | 404 | `voice_not_found` | Vois Studio does not have the voice. |
 | 501 | `ffmpeg_not_found` | Install ffmpeg, or use `wav` or `pcm`. |
